@@ -14,21 +14,21 @@ This system also allows easier integration with hyperopt, since the space of hyp
 
 ## Usage
 
-To use the program, run from the command line: python3 lab.py [configuration_file] [num-trials]
+To use the program, run from the command line: `python3 lab.py configuration_file num-trials`
 
-[configuration-file] is the name of a file, the contents of which are formatted as a python dictionary as described below. The values of the dictionary may be hyperopt spaces such as:
-uniform("label", a, b), 
-randint("label", a, b),
-choice("label", ["option1","option2"]),
-normal("label", m, s)
+`configuration-file` is the name of a file, the contents of which are formatted as a python dictionary as described below. The values of the dictionary may be hyperopt spaces such as:
+    uniform("label", a, b), 
+    randint("label", a, b),
+    choice("label", ["option1","option2"]),
+    normal("label", m, s)
 
 [num-trials] may be omitted, and a default value of 1 will be used. It is an integer that specifying the number of runs to make.
 There also need to be a file called filenames.json in the same folder as the program, with key value pairs for dataset aliases and dataset paths, like so:
-{
-"Dataset 1": "/directory/directory/dataset_a.csv",
-"Dataset 2": "/directory/directory/dataset_b.csv",
-...
-}
+    {
+    "Dataset 1": "/directory/directory/dataset_a.csv",
+    "Dataset 2": "/directory/directory/dataset_b.csv",
+    ...
+    }
 In the same folder as the program, there will be a folder called results, in which the program will produce a models folder, a log.txt, and a terse_log.txt. It will also produce a temp_models folder and a temp.txt temporarily while running. 
 
 ## Configuration Format
