@@ -116,26 +116,23 @@ The dependencies are listed in `requirements.txt`, and can be installed using:
 Here is an example filenames.json:
 
     {
-    "CICIDS-Monday": "/opt/spark-data/netdata/cicids-2017/Monday-WorkingHours.pcap_ISCX.csv",
-    "CICIDS-Tuesday": "/opt/spark-data/netdata/cicids-2017/Tuesday-WorkingHours.pcap_ISCX.csv",
-    "CICIDS-Wednesday": "/opt/spark-data/netdata/cicids-2017/Wednesday-workingHours.pcap_ISCX.csv",
-    "CICIDS-Thursday-Web": "/opt/spark-data/netdata/cicids-2017/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
-    "CICIDS-Thursday-Infiltration": "/opt/spark-data/netdata/cicids-2017/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
-    "CICIDS-Friday-Morning": "/opt/spark-data/netdata/cicids-2017/Friday-WorkingHours-Morning.pcap_ISCX.csv",
-    "CICIDS-Friday-PortScan": "/opt/spark-data/netdata/cicids-2017/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
-    "CICIDS-Friday-DDOS": "/opt/spark-data/netdata/cicids-2017/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"
+    "Jan": "/data/dataset_collected_january.csv",
+    "Feb": "/data/dataset_collected_February.csv",
+    "Mar 1": "/data/dataset_collected_march1-15.csv",
+    "Mar 2": "/data/dataset_collected_March16-31.csv",
+    "Apr": "/data/dataset_collected_april.csv",
     }
 
 Here are some example configuration files that work with it:
 
     { "run": {
-            "datasets": ["CICIDS-Friday-DDOS", "CICIDS-Friday-PortScan"],
+            "datasets": ["Mar 1", "Mar 2"],
             "processing": {
-                "features": "EXCEPT: ['Destination Port']",
+                "features": "all",
                 "label_column": "Label",
                 "normal_label": "BENIGN",
                 "categorical": {
-                    "features": "lambda x: 'Flags' in x or 'Port' in x",
+                    "features": "none",
                     "index": True,
                     "reduce": {
                         "num": 20, 
@@ -155,13 +152,13 @@ Here are some example configuration files that work with it:
             "bag_size": "all" } }
             
     { "run": {
-            "datasets": ["CICIDS-Friday-DDOS"],
+            "datasets": ["Feb"],
             "processing": {
-                "features": "all",
+                "features": "EXCEPT: ['uneeded_feature']",
                 "label_column": "Label",
                 "normal_label": "BENIGN",
                 "categorical": {
-                    "features": "lambda x: 'Port' in x",
+                    "features": "lambda x: 'type' in x",
                     "index": True,
                     "reduce": {
                         "num": 5,
