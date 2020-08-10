@@ -83,7 +83,7 @@ The configuration is a Python dictionary with the following fields (the '|' deno
         "bag_num": int, specifying the number of bags used (1 for normal run),
         "bag_size": int or "all", specifying the number of features per bag ("all" for normal run) } }
     
-## Warnings and Flaws
+## Warnings and Flaws 
 
 - Hyperopt performs each run independently, even when the models and data would be the same, and the only variation is in, say, the threshold. This theoretically harms performance, so a future, rather difficult refactoring might be worth the effort, depending on the use cases. 
 
