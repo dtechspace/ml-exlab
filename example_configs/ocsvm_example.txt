@@ -1,0 +1,25 @@
+{ "run": {
+        "datasets": ["Jan"],
+        "processing": {
+            "features": "lambda x: 'projected' in x",
+            "label_column": "Label",
+            "normal_label": "BENIGN",
+            "categorical": {
+                "features": "lambda x: 'type' in x",
+                "index": False,
+                "reduce": {
+                    "num": 20, 
+                    "method": "cluster"},
+                "onehot": False},
+            "scaled": "SD"},
+        "model": {
+            "type": "ocsvm",
+            "kernel": "rbf",
+            "nu": 0.015,
+            "gamma": 0.6 },
+        "data_management": {
+            "test": 0.2,
+            "use_all": False},
+        "hyperloss": "box",
+        "bag_num": 1,
+        "bag_size": "all" } }
