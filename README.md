@@ -123,7 +123,7 @@ Here is an example filenames.json:
     "Apr": "/data/dataset_collected_april.csv",
     }
 
-Here are some example configuration files that work with it:
+Here is an example configuration file that work with it:
 
     { "run": {
             "datasets": ["Mar 1", "Mar 2"],
@@ -151,35 +151,7 @@ Here are some example configuration files that work with it:
             "bag_num": 1,
             "bag_size": "all" } }
             
-    { "run": {
-            "datasets": ["Feb"],
-            "processing": {
-                "features": "EXCEPT: ['uneeded_feature']",
-                "label_column": "Label",
-                "normal_label": "BENIGN",
-                "categorical": {
-                    "features": "lambda x: 'type' in x",
-                    "index": True,
-                    "reduce": {
-                        "num": 5,
-                        "method": "cluster"},
-                    "onehot": True},
-                "scaled": "minmax"},
-            "model": {
-                "type": "autoencoder",
-                "encoding_size": randint("encoding_size", 3, 10),
-                "extra": 0,
-                "epochs": 40,
-                "optimizer": "sgd",
-                "learning_rate": .3,
-                "metric": "dist",
-                "threshold": uniform("threshold", .5, 3) },
-            "data_management": {
-                "test": 0.2,
-                "use_all": True},
-            "hyperloss": "box",
-            "bag_num": 10,
-            "bag_size": 50 } }
+More can be found in the `examples` file.
 
 ## Extensionality
 
