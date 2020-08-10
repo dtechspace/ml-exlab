@@ -1,0 +1,9 @@
+numpy==1.19.0
+jsonpatch==1.16
+jsonpointer==1.10
+jsonschema==2.6.0
+pandas==1.0.5
+sklearn==0.0
+Keras==2.4.3
+tensorflow==2.2.0
+hyperopt @ git+https://github.com/hyperopt/hyperopt.git@8edf67974e68a01ed553f768166bb83812ac0578
