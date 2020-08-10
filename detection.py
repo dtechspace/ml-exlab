@@ -14,7 +14,6 @@ from keras.optimizers import SGD, Adam
 from keras import models
 
 from hyperopt import STATUS_OK, tpe, Trials, fmin, hp
-
 from hyperopt.hp import randint, uniform, choice
 
 from time import time
@@ -141,6 +140,8 @@ if categorical_configuration["onehot"]:
             .join(df[[c for c in list(df.columns) if c not in cat_columns]])
 
     df = onehot_encode(df)
+    
+    #updates nonlabel_columns
     nonlabel_columns = [c for c in list(df.columns) if c != label_column]
     
 #Scaling ------------------------------------------------------------------------------------------------------
@@ -178,52 +179,62 @@ model_configuration = conf["config"]["model"]
 
 model = None
 
+#Will iterate for the number of bags specified
 for i in range(bag_num):
 
     if bag_size == "all": bag_size = len(nonlabel_columns)
 
     features = random.sample(nonlabel_columns, min(bag_size, len(nonlabel_columns)))
-
-    print("FEATURES: ", features)
     
     limited_df = df[features]
 
+    #If the model was an autoencoder
     if model_configuration["type"] == "autoencoder":
         print("AutoEncoder")
-        #autoencoder = global autoencoder
+        
+        #loads model that was generated in lab.py
         autoencoder = models.load_model("results/models/"+ conf["model"]+ "/autoencoder_model")
         
         predictions = pd.DataFrame(autoencoder.predict(limited_df))\
             .rename(mapper = lambda s: str(s)+"_prediction", axis = "columns")
-        print("here")
+        
         prediction_columns = list(predictions.columns)
         nonprediction_columns = [x for x in list(limited_df.columns) if x not in prediction_columns]
         limited_df = limited_df.join(predictions)
 
         df["temp_distances"] = limited_df.apply(func = lambda r: metric(model_configuration["metric"], \
             r[prediction_columns], r[nonprediction_columns]), axis = 1)
-        print(df["temp_distances"])
+        
+        
+    #If the model was an One Class Support Vector Machine
     elif model_configuration["type"] == "ocsvm":
-
         print("OCSVM")
 
+        #loads model that was generated in lab.py
         ocsvm = load("results/models/"+ conf["model"]+ "/ocsvm_model")
+        
         df["temp_distances"] = ocsvm.predict(limited_df)
 
-
+    #If the model was K-Means
     elif model_configuration["type"] == "kmeans":
-
         print("K-Means")
+        
+        #loads model that was generated in lab.py
         kmeans = load("results/models/"+ conf["model"]+ "/kmeans_model")
 
+        #gets centers from model
         centers = kmeans.cluster_centers_
         noncenter_columns = [x for x in list(limited_df.columns) if x != "centers"]
-
+        
         limited_df["centers"] = kmeans.predict(limited_df)
+        
+        #computes distances to nearest centroid
         df["temp_distances"] = limited_df.apply(func = lambda r: metric(model_configuration["metric"], \
             centers[int(r["centers"])],r[noncenter_columns]), axis = 1)
 
-
+    #The [distances] metric is the anomaly score
     df["distances"] = df["distances"] + df["temp_distances"]
     df = df[nonlabel_columns+[label_column, "distances"]]
+    
+    #df (which now contains a column "distances") can be exported as a CSV file with the line: df.to_csv("/file/path/to/export/to")
     print(df["distances"])
