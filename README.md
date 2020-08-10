@@ -34,6 +34,18 @@ There also need to be a file called filenames.json in the same folder as the pro
     
 In the same folder as the program, there will be a folder called `results`, in which the program will produce a `models` folder, a `log.txt`, and a `terse_log.txt`. It will also produce a `temp_models` folder and a `temp.txt` temporarily while running. 
 
+### Loading Models
+
+There is also an option to run already trained models. Once you have run `python3 lab.py configuration_file num_trials`, you may run from the command line:
+
+    python3 detection.py configuration_file
+
+To run experiment again, with the already trained model.
+
+### GUI for Generating Configs
+
+There is also a graphical user interface for generating config files. To use it, you can run the `server.py` file to start a local server, and open localhost:8000 in a browser to view the GUI. In the current version, when the "generate" button is clicked, a config structure will be displayed. You can copy this into a text file and continue from there. However, in the `cgi-bin` folder, the `handle_run.py` file can be modified to accomplish arbitrary computation with the submitted config data. 
+
 ## Configuration Format
 
 The configuration is a Python dictionary with the following fields (the '|' denotes a choice between mutliple options; each configuration includes only one of the choices). 
