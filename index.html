@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Experiment Lab Config File Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <h1>Experiment Lab Config File Builder</h1>
+    <h3>Datasets and Preprocessing</h3>
+    <div id = "datasets">
+        <label>Dataset file names: </label>
+        <input id = "dataset_selection" 
+            type = "file" 
+            multiple 
+            accept = ".csv">
+    </div>
+    <div id = "processing">
+        <div id = "feature_selection_div" hidden>
+            <br>
+            <label>Select features: </label> <br>
+            <select id = "feature_selection" 
+                size = 10 
+                multiple></select>
+        </div>
+        <div id = "cat_feature_selection_div" hidden>
+            <br>
+            <label>Select label column: </label>
+            <input id = "label_column" list = "label_list">
+            <datalist id = "label_list"></datalist>
+            <br>
+            <label>Select normal label: </label>
+            <input id = "normal_value">
+            <br><br>
+            <label>Select categorical features: </label> <br>
+            <select 
+                id = "cat_feature_selection"
+                size = 5 
+                multiple></select>
+        </div>
+        <br>
+        <label>Index categorical variables: </label><input id = "index_check" type = "checkbox"></input>
+        <br>
+        <label>Reduce categorical variables: </label><input id = "reduction_check" type = "checkbox"></input>
+        <br>
+        <div id = "reduction_div" hidden>
+            <blockquote>
+                <label>Reduction method: </label>
+                <input id = "reduction_method" type = "text" list = "reduction_list"></input>
+                <datalist id = "reduction_list">
+                    <option value = "Modulo">bin by remainder</option>
+                    <option value = "Cluster">bin by clustering on numerical features</option>
+                    <option value = "Hash">bin randomly</option>
+                </datalist>
+                <br>
+                <label>Reduction parameter: </label>
+                <input id = "reduction_num" type = "number" value = 10>
+            </blockquote>
+        </div>
+        <label>One hot encode categorical variables: </label><input id = "onehot_check" type = "checkbox"></input>
+        <br>
+        <label>Scale all variables: </label><input id = "scaling_check" type = "checkbox"></input>
+        <div id = "scaling_div" hidden>
+            <blockquote>
+                <label>Scaling method: </label>
+                <input id = "scaling_method" type = "text" list = "scaling_list"></input>
+                <datalist id = "scaling_list">
+                    <option value = "Standard">translate to mean = 0, scale to standard deviation = 1</option>
+                    <option value = "MinMax">translate and scale to max = 1, min = 0</option>
+                    <option value = "MaxAbs">scale to max absolute value = 1</option>
+                </datalist>
+            </blockquote>
+        </div>
+    </div>
+    <h3>Model</h3>
+    <div id = "model">
+        <label>Model type: </label>
+        <input id = "model_type" list = "model_type_list"></input>
+        <datalist id = "model_type_list">
+            <option value = "K Means"></option>
+            <option value = "Autoencoder"></option>
+            <option value = "One Class SVM"></option>
+        </datalist>
+        <br><br>
+        <div id = "kmeans_div" hidden>
+            <label>K: </label>
+            <input id = "k" type = "number" value = 10>
+            <br>
+            <label>Threshold: </label>
+            <input id = "kmeans_threshold" type = "number" value = 10>
+            <br>
+            <label>Metric: </label>
+            <input id = "kmeans_metric" type = "text" list = "kmeans_metric_list">
+            <datalist id = "kmeans_metric_list">
+                <option value = "Distance">Euclidean distance</option>
+                <option value = "Dot product"></option>
+                <option value = "Cosine"></option>
+            </datalist>
+        </div>
+        <div id = "autoencoder_div" hidden>
+            <label>Encoding size: </label>
+            <input id = "encoding_size" type = "number" value = 5>
+            <br>
+            <label>Extra size: </label>
+            <input id = "extra" type = "number" value = 0>
+            <br>
+            <label>Epochs: </label>
+            <input id = "epochs" type = "number" value = 30>
+            <br>
+            <label>Learning Rate: </label>
+            <input id = "lr" type = "number" value = 0.2>
+            <br>
+            <label>Threshold: </label>
+            <input id = "autoencoder_threshold" type = "number" value = 0.05>
+            <br>
+            <label>Optimizer: </label>
+            <input id = "optimizer" type = "text" list = "optimizer_list">
+            <datalist id = "optimizer_list">
+                <option value = "SGD">Stochastic gradient descient</option>
+                <option value = "Adam"></option>
+            </datalist>
+            <br>
+            <label>Metric: </label>
+            <input id = "autoencoder_metric" type = "text" list = "autoencoder_metric_list">
+            <datalist id = "autoencoder_metric_list">
+                <option value = "Distance">Euclidean distance</option>
+                <option value = "Dot product"></option>
+                <option value = "Cosine"></option>
+            </datalist>
+        </div>
+        <div id = "ocsvm_div" hidden>
+            <label>Gamma: </label>
+            <input id = "gamma" type = "number" value = 0.5>
+            <br>
+            <label>Nu: </label>
+            <input id = "nu" type = "number" value = 0.01>
+            <br>
+            <label>Kernel: </label>
+            <input id = "kernel" type = "text" list = "kernel_list">
+            <datalist id = "kernel_list">
+                <option value = "RBF">Radial basis function</option>
+                <option value = "Linear"></option>
+                <option value = "Polynomial"></option>
+                <option value = "Sigmoid"></option>
+            </datalist>
+        </div>
+        <br>
+        <label>Number of bags:</label>
+        <input id = "bag_num" type = "number" value = 1>
+        <br>
+        <label>Features per bag:</label>
+        <input id = "bag_size" type = "num">
+    </div>
+    <h3>Testing</h3>
+    <div id = "other">
+        <label>Testing proportion:</label>
+        <input id = "test_proportion" type = "number" value = 0.2></input>
+        <br>
+        <label>Use all data: </label>
+        <input id = "use_all_check" type = "checkbox">
+        <br>
+        <label>Hyperloss: </label>
+        <input id = "hyperloss" type = "text" list = "hyperloss_list">
+        <datalist id = "hyperloss_list">
+            <option value = "Box"></option>
+            <option value = "F1"></option>
+            <option value = "Accuracy"></option>
+            <option value = "Recall"></option>
+            <option value = "Precision"></option>
+        </datalist>
+    </div>
+    <br>
+    <button onclick = "generate()">Generate</button>
+    <form action = "/cgi-bin/handle_run.py" method = "get" hidden>
+        <input id = "config" type = "text" name = "config">
+        <input id = "submit" type = "submit" value = "Submit" />
+    </form>
+</body>
+
+<script>
+    function update_headers(files) {
+        var reader = new FileReader();
+        reader.readAsText(files[0], 'UTF-8');
+        reader.onload = readerEvent => {
+            var first_line = readerEvent.target.result.split("\n").shift();
+            update_datalist(first_line.split(","), 'feature_selection')
+        }
+    }
+
+    function update_datalist(options, datalist_id) {
+        document.getElementById(datalist_id).innerHTML = "<option>"+(options.join("</option><option>")+"</option>")
+    }
+
+    function getSelectValues(select_id) {
+        var select = document.getElementById(select_id)
+        var result = [];
+        var options = select && select.options;
+        var opt;
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+            if (opt.selected) { result.push(opt.value || opt.text); }
+        }
+        return result;
+    }
+
+    function str(list) {
+        var re = "["
+        for(var i = 0; i < list.length; i ++) {
+            re += "'"+String(list[i])+"',"
+        }
+        return re.substring(0, re.length-1)+"]"
+    }
+
+    function str_files(list) {
+        var re = "["
+        for(var i = 0; i < list.length; i ++) {
+            re += "'"+String(list[i]["name"])+"',"
+        }
+        return re.substring(0, re.length-1)+"]"
+    }
+
+    function bool_to_str(bool) {
+        if (bool) { return "True" }
+        else { return "False" }
+    }
+
+    function index_to_str(index) {
+        return {
+            "Modulo": "'mod'",
+            "Cluster": "'cluster'",
+            "Hash": "'hash'",
+            "Standard": "'SD'",
+            "MinMax": "'minmax'",
+            "MaxAbs": "'maxabs'",
+            "Autoencoder": "'autoencoder'",
+            "K Means": "'kmeans'",
+            "One Class SVM": "'ocsvm'",
+            "Box": "'box'",
+            "F1": "'f'",
+            "Accuracy": "'accuracy'",
+            "Recall": "'recall'",
+            "Precision": "'precision'",
+            "SGD": "'sgd'",
+            "Adam": "'adam'",
+            "Distance": "'dist'",
+            "Dot product": "'dot'",
+            "Cosine": "'cos'",
+            "RBF": "'RBF'",
+            "Linear": "'Linear'",
+            "Polynomial": "'Polynomial'",
+            "Sigmoid": "'Sigmoid'"
+        }[index]
+    }
+
+    function extended_index_to_str(input, checked) {
+        if (!checked) { return "'none'" }
+        else { return index_to_str(input.value) }
+    }
+
+    function generate() {
+        var model_type = index_to_str(document.getElementById('model_type').value);
+        var model_text  = '\n"model": {\n    "type": '+model_type+',';
+        if (model_type == "'autoencoder'") {
+            model_text = model_text
+            +'\n    "encoding_size": '+document.getElementById('encoding_size').value+','
+            +'\n    "extra": '+document.getElementById('extra').value+','
+            +'\n    "epochs": '+document.getElementById('epochs').value+','
+            +'\n    "optimizer": '+index_to_str(document.getElementById('optimizer').value)+','
+            +'\n    "learning_rate": '+document.getElementById('lr').value+','
+            +'\n    "metric": '+index_to_str(document.getElementById('autoencoder_metric').value)+','
+            +'\n    "threshold": '+document.getElementById('autoencoder_threshold').value+'},'
+        }
+        else if (model_type == "'kmeans'") {
+            model_text = model_text
+            +'\n    "k": '+document.getElementById('k').value+','
+            +'\n    "metric": '+index_to_str(document.getElementById('kmeans_metric').value)+','
+            +'\n    "threshold": '+document.getElementById('kmeans_threshold').value+'},'
+        }
+        else if (model_type == "'ocsvm'") {
+            model_text = model_text
+            +'\n    "kernel": '+index_to_str(document.getElementById('kernel').value)+','
+            +'\n    "nu": '+document.getElementById('nu').value+','
+            +'\n    "gamma": '+document.getElementById('gamma').value+'},'
+        }
+        var text = ''
+        +'\n{ "run": {'
+        +'\n"datasets": '+str_files(document.getElementById('dataset_selection').files)+','
+        +'\n"processing": {'
+        +'\n    "features": '+str(getSelectValues("feature_selection"))+','
+        +'\n    "label_column": "'+document.getElementById('label_column').value+'",'
+        +'\n    "normal_label": "'+document.getElementById('normal_value').value+'",'
+        +'\n    "categorical": {'
+        +'\n       "features": '+str(getSelectValues('cat_feature_selection'))+','
+        +'\n       "index": '+bool_to_str(document.getElementById('index_check').checked)+','
+        +'\n       "reduce": {'
+        +'\n           "method": '+extended_index_to_str(document.getElementById('reduction_method'), document.getElementById('reduction_check').checked)+','
+        +'\n           "num": '+document.getElementById('reduction_num').value+'},'
+        +'\n       "onehot": '+bool_to_str(document.getElementById('onehot_check').checked)+'},'
+        +'\n   "scaled": '+extended_index_to_str(document.getElementById('scaling_method'), document.getElementById('scaling_check').checked)+'},'
+        + model_text
+        +'\n"data_management": {'
+        +'\n    "test": '+document.getElementById('test_proportion').value+','
+        +'\n    "use_all": '+bool_to_str(document.getElementById('use_all_check').checked)+'},'
+        +'\n"hyperloss": '+index_to_str(document.getElementById('hyperloss').value)+','
+        +'\n"bag_num": '+document.getElementById('bag_num').value+','
+        +'\n"bag_size": '+document.getElementById('bag_size').value+' } }';
+        console.log(text);
+        document.getElementById("config").value = text;
+        document.getElementById("submit").click();
+    }
+
+    document.getElementById("dataset_selection").onchange = function(e) { 
+        update_headers(document.getElementById('dataset_selection').files);
+        document.getElementById("feature_selection_div").hidden = false;
+    };
+
+    document.getElementById("feature_selection").onchange = function(e) { 
+        var features = getSelectValues('feature_selection');
+        document.getElementById("bag_size").value = features.length;
+        update_datalist(features, "cat_feature_selection");
+        update_datalist(features, "label_list");
+        document.getElementById("cat_feature_selection_div").hidden = false;
+    };
+
+    document.getElementById("reduction_check").onchange = function(e) { 
+        document.getElementById("reduction_div").hidden = !document.getElementById("reduction_check").checked;
+    };
+
+    document.getElementById("scaling_check").onchange = function(e) { 
+        document.getElementById("scaling_div").hidden = !document.getElementById("scaling_check").checked;
+    };
+
+    document.getElementById("model_type").onchange = function(e) { 
+        var model_list = ["kmeans", "autoencoder", "ocsvm"];
+        for(var i = 0; i < model_list.length; i ++) { document.getElementById(model_list[i]+"_div").hidden = true; }
+        var selection = document.getElementById("model_type").value
+        if (selection == "K Means") { document.getElementById("kmeans_div").hidden = false; }
+        if (selection == "Autoencoder") { document.getElementById("autoencoder_div").hidden = false; }
+        if (selection == "One Class SVM") { document.getElementById("ocsvm_div").hidden = false; }
+    };
+</script>
+
+</html>
