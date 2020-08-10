@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 import pandas as pd
 import numpy as np
 import math
@@ -37,12 +35,10 @@ warnings.filterwarnings("ignore")
 # [pipe] is a dictionary representing a pipeline containing preprocessing stages
 pipe = {}
 
-# In[2]:
-
 # wrapper function to run a [config] and return a hyperloss (called for optimization by hyperopt)
 def run_wrapper(config):
     
-    # Read in the json that maps dataset names to their paths
+    # load filename aliases
     sources = json.loads(str(open("filenames.json").read()))
     
     # safe division
@@ -147,10 +143,13 @@ def run_wrapper(config):
         # strip column names
         df = df.rename(columns = (lambda x: x.strip()))
         
+        initial_size = len(df)
+
         # remove rows with NaN or +/- infinity
         df = df[~df.isin([np.nan, np.inf, -np.inf]).any(1)].reset_index(drop=True)
 
-        # --------------------------------------------------------------------------------------------------------------------
+        if(len(df) != initial_size):
+            print("<Some rows contained either NaN or inf values are were removed>")
 
         processing_configuration = configuration["processing"]
         label_column, normal_label = processing_configuration["label_column"], processing_configuration["normal_label"]
