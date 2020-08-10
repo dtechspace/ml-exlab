@@ -85,15 +85,19 @@ The configuration is a Python dictionary with the following fields (the '|' deno
     
 ## Warnings and Flaws
 
-Hyperopt performs each run independently, even when the models and data would be the same, and the only variation is in, say, the threshold. This theoretically harms performance, so a future, rather difficult refactoring might be worth the effort, depending on the use cases. 
+- Hyperopt performs each run independently, even when the models and data would be the same, and the only variation is in, say, the threshold. This theoretically harms performance, so a future, rather difficult refactoring might be worth the effort, depending on the use cases. 
 
-When using feature bagging, only the last model is persisted and logged.
+- When using feature bagging, only the last model is persisted and logged.
 
-The autoencoder's loss is not configurable at the moment, so it will train to optimize mean squared error, even when the anomalousness metric is not Euclidean distance.
+- The autoencoder's loss is not configurable at the moment, so it will train to optimize mean squared error, even when the anomalousness metric is not Euclidean distance.
 
-The cosine metric and the hashing feature reduction options are currently not implemented. Standard scaling gives lots of NaN entries in the dataset we are currently using.
+- The cosine metric and the hashing feature reduction options are currently not implemented. Standard scaling gives lots of NaN entries in the dataset we are currently using.
 
-The `lab.py` and the `detection.py` files currently contain a large overlap in code, which makes future edits very difficult since they would have to be implemented twice (violating the Don't Repeat Yourself principle). 
+- The `lab.py` and the `detection.py` files currently contain a large overlap in code, which makes future edits very difficult since they would have to be implemented twice (violating the Don't Repeat Yourself principle).
+
+- The gui currently cannot produce config files with hyperopt spaces.
+
+- The within the analyze function, the box measure is customizable with different weightings. But that customization is not available to the user from the config file.
 
 ## Logging and Persisting
 
