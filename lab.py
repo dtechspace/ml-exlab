@@ -114,6 +114,7 @@ def run_wrapper(config):
     # returns a sublist of [l] according to [condition]
     def interpret_list(condition, l):
 
+        #strings beginning with feature_exeption will include all but the columns listed after
         feature_exception = "EXCEPT: "
 
         if condition == "all": return l
@@ -469,6 +470,7 @@ def run_wrapper(config):
     
     print("Logging")
     
+    #hours=4 for time zone correction [can be changed to adjust to your time zone]
     date = str(datetime.now() - timedelta(hours=4))[:-7]
     
     # add a log entry to temp.txt
@@ -508,7 +510,7 @@ try: os.mkdir("results/")
 except: pass
 
 print("-"*50)
-    
+   
 if hyperopt_evals > 0:
     
     # read in the config
@@ -554,6 +556,8 @@ if hyperopt_evals > 0:
                 
     # log the winning run in the winner_log, and persist the winning model
     best_datum = json.loads(data[best_id])
+    
+    #moves best to results/models
     shutil.copytree("results/temp_models/" + best_datum["config"]["model"]["type"] + str(best_id), \
                     "results/models/" + best_datum["model"])
 
@@ -562,6 +566,7 @@ if hyperopt_evals > 0:
     winner_log.write("\n\n")
     winner_log.close()
 
+    #removes the temporary files
     shutil.rmtree("results/temp_models/")
     os.remove("results/temp.txt")
     
