@@ -1,7 +1,7 @@
 { "run": {
-        "datasets": ["dataset2"],
+        "datasets": ["Jan"],
         "processing": {
-            "features": "EXCEPT: ['uneeded_feature']",
+            "features": "lambda x: 'projected' in x",
             "label_column": "Label",
             "normal_label": "BENIGN",
             "categorical": {
