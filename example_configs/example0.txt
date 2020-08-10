@@ -1,0 +1,25 @@
+{ "run": {
+        "datasets": ["dataset2"],
+        "processing": {
+            "features": "EXCEPT: ['uneeded_feature']",
+            "label_column": "Label",
+            "normal_label": "BENIGN",
+            "categorical": {
+                "features": "lambda x: 'type' in x",
+                "index": False,
+                "reduce": {
+                    "num": 20, 
+                    "method": "cluster"},
+                "onehot": False},
+            "scaled": "SD"},
+        "model": {
+            "type": "kmeans",
+            "k": 10,
+            "metric": "dist",
+            "threshold": 1.0 },
+        "data_management": {
+            "test": 0.1,
+            "use_all": False},
+        "hyperloss": "precision",
+        "bag_num": 1,
+        "bag_size": "all" } }
