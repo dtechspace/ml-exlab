@@ -1,5 +1,5 @@
 # ML-ExLab
-
+![](logo.png)
 ## Background
 
 Much of the machine learning part of the Zenurian development process has been of the form: write a piece of code to test a certain machine learning idea, run the code to test the idea, debugging along the way, change or fork the code to try another idea and improve the results, and repeat. This cycle resulted in many pieces of code, and many versions of each program, that varied slightly while being mostly redundant. This led to disorganization, confusion, inefficiency, inaccessibility of old code, and incomparability of recorded results due to slightly varying contexts. This led to the idea to formally specify all of the choices and variables that specify a machine learning experiment, from which results can be more easily organized and compared. This immediately produced the further idea to create a program that can take in such a formally specified "experiment configuration" and run that experiment, eliminating code proliferation, redundancy, and confusion.
