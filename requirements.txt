@@ -5,5 +5,12 @@ jsonschema==2.6.0
 pandas==1.0.5
 sklearn==0.0
 Keras==2.4.3
+#tensorflow 2.2.0 has requirement h5py<2.11.0,>=2.10.0, but you have h5py 3.0.0.
+h5py==2.10.0
+#tensorflow 2.2.0 has requirement scipy==1.4.1; python_version >= "3", but you have scipy 1.5.3.
+scipy==1.4.1
+#google-auth 1.23.0 requires setuptools>=40.3.0, but you'll have setuptools 39.0.1 which is incompatible.
+#tensorboard 2.2.2 requires setuptools>=41.0.0, but you'll have setuptools 39.0.1 which is incompatible.
+setuptools==41.0.0
 tensorflow==2.2.0
 hyperopt @ git+https://github.com/hyperopt/hyperopt.git@8edf67974e68a01ed553f768166bb83812ac0578
